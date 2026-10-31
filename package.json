@@ -1,0 +1,10 @@
+{
+  "name": "mdt-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MDT web cache derriere des mini-jeux (Netlify)",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

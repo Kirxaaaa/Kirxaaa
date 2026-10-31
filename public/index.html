@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="style.css">
+<title>Jeux</title>
+</head>
+<body>
+<iframe id="games" src="games.html" title="Jeux"></iframe>
+
+<div id="gate" class="hidden">
+  <form id="loginForm" class="gate-box form">
+    <h1>Connexion</h1>
+    <p class="muted">Accès réservé aux membres autorisés.</p>
+    <input id="lUser" type="text" maxlength="24" autocomplete="username" autocapitalize="none" placeholder="Nom d'utilisateur">
+    <input id="lPass" type="password" maxlength="72" autocomplete="current-password" placeholder="Mot de passe">
+    <p class="gate-err" id="lErr" role="alert"></p>
+    <button class="primary">Se connecter</button>
+    <button type="button" class="ghost" id="toSignup">Créer un compte</button>
+    <button type="button" class="ghost" id="gateBack1">Retour au jeu</button>
+  </form>
+  <form id="signupForm" class="gate-box form hidden">
+    <h1>Créer un compte</h1>
+    <p class="muted">Le compte devra être validé par un administrateur.</p>
+    <input id="sUser" type="text" maxlength="24" autocomplete="username" autocapitalize="none" placeholder="Nom d'utilisateur">
+    <input id="sPass" type="password" maxlength="72" autocomplete="new-password" placeholder="Mot de passe (6 caractères minimum)">
+    <input id="sPass2" type="password" maxlength="72" autocomplete="new-password" placeholder="Confirmer le mot de passe">
+    <p class="gate-err" id="sErr" role="alert"></p>
+    <button class="primary">Créer le compte</button>
+    <button type="button" class="ghost" id="toLogin">J'ai déjà un compte</button>
+    <button type="button" class="ghost" id="gateBack2">Retour au jeu</button>
+  </form>
+</div>
+
+<div id="app" class="hidden">
+  <aside class="rail">
+    <div class="brand">MDT</div>
+    <nav>
+      <button data-view="dashboard" class="active">Tableau de bord</button>
+      <button data-view="citizens">Citoyens</button>
+      <button data-view="vehicles">Véhicules</button>
+      <button data-view="reports">Rapports</button>
+      <button data-view="warrants">Avis de recherche</button>
+      <button data-view="accounts" id="navAccounts">Comptes</button>
+    </nav>
+    <div class="officer">
+      <strong id="officerName">—</strong>
+      <span id="officerGrade"></span>
+      <button id="logoutBtn" class="ghost small">Se déconnecter</button>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <h1 id="title">Tableau de bord</h1>
+      <button id="closeBtn" class="ghost">Retour au jeu</button>
+    </header>
+
+    <section id="view-dashboard" class="view">
+      <div class="cols">
+        <div><h2>Avis de recherche en cours</h2><div id="dashWarrants" class="stack"></div></div>
+        <div><h2>Derniers rapports</h2><div id="dashReports" class="stack"></div></div>
+      </div>
+    </section>
+
+    <section id="view-citizens" class="view hidden">
+      <form class="search" data-kind="citizen">
+        <input type="text" placeholder="Nom ou prénom du citoyen" autocomplete="off">
+        <button class="primary">Rechercher</button>
+      </form>
+      <div class="cols">
+        <div>
+          <div id="citizenResults" class="stack"></div>
+          <form id="citizenForm" class="panel form" style="margin-top:22px">
+            <h2>Nouveau citoyen</h2>
+            <input id="ncName" type="text" maxlength="100" placeholder="Nom complet">
+            <input id="ncDob" type="text" maxlength="30" placeholder="Date de naissance (facultatif)">
+            <textarea id="ncNotes" rows="2" maxlength="1000" placeholder="Notes (facultatif)"></textarea>
+            <button class="primary">Ajouter le citoyen</button>
+          </form>
+        </div>
+        <div id="citizenDetail" class="panel hidden">
+          <h2 id="cName"></h2>
+          <p id="cMeta" class="muted"></p>
+          <form id="recordForm" class="form">
+            <div class="row">
+              <select id="rType">
+                <option value="amende">Amende</option>
+                <option value="arrestation">Arrestation</option>
+                <option value="note">Note</option>
+              </select>
+              <input id="rAmount" type="number" min="0" placeholder="Montant ($)">
+            </div>
+            <input id="rTitle" type="text" maxlength="120" placeholder="Motif">
+            <textarea id="rDetails" rows="3" maxlength="2000" placeholder="Détails (facultatif)"></textarea>
+            <button class="primary">Ajouter au casier</button>
+          </form>
+          <h2 style="margin-top:22px">Casier</h2>
+          <div id="recordList" class="stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-vehicles" class="view hidden">
+      <form class="search" data-kind="vehicle">
+        <input type="text" placeholder="Plaque d'immatriculation" autocomplete="off">
+        <button class="primary">Rechercher</button>
+      </form>
+      <div class="cols">
+        <div id="vehicleResults" class="stack"></div>
+        <form id="vehicleForm" class="panel form">
+          <h2>Nouveau véhicule</h2>
+          <input id="nvPlate" type="text" maxlength="12" placeholder="Plaque">
+          <input id="nvOwner" type="text" maxlength="100" placeholder="Propriétaire">
+          <input id="nvModel" type="text" maxlength="60" placeholder="Modèle (facultatif)">
+          <button class="primary">Enregistrer le véhicule</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="view-reports" class="view hidden">
+      <div class="cols">
+        <div>
+          <form class="search" data-kind="report">
+            <input type="text" placeholder="Rechercher un rapport" autocomplete="off">
+            <button class="primary">Rechercher</button>
+          </form>
+          <div id="reportResults" class="stack"></div>
+        </div>
+        <form id="reportForm" class="panel form">
+          <h2>Nouveau rapport</h2>
+          <input id="repTitle" type="text" maxlength="120" placeholder="Titre">
+          <textarea id="repContent" rows="10" maxlength="4000" placeholder="Déroulé des faits, personnes impliquées, suites données"></textarea>
+          <button class="primary">Enregistrer le rapport</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="view-warrants" class="view hidden">
+      <div class="cols">
+        <div id="warrantList" class="stack"></div>
+        <form id="warrantForm" class="panel form">
+          <h2>Émettre un avis de recherche</h2>
+          <input id="wName" type="text" maxlength="100" placeholder="Nom complet de la personne">
+          <textarea id="wReason" rows="5" maxlength="1000" placeholder="Motif"></textarea>
+          <button class="danger">Émettre l'avis</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="view-accounts" class="view hidden">
+      <form class="search" data-kind="account">
+        <input type="text" placeholder="Nom d'utilisateur" autocomplete="off">
+        <button class="primary">Rechercher</button>
+      </form>
+      <p class="muted" style="margin-bottom:12px">Validez les nouveaux comptes pour leur donner accès au MDT.</p>
+      <div id="accountResults" class="stack"></div>
+    </section>
+  </main>
+  <div id="toast" class="toast hidden"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
